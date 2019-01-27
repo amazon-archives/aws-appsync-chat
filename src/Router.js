@@ -1,29 +1,61 @@
 import React from 'react'
+import { BrowserRouter } from "react-router-dom"
+import { Hub } from 'aws-amplify'
+import { withAuthenticator } from 'aws-amplify-react'
 
-import Conversations from './components/Conversations'
-import Conversation from './components/Conversation'
-import Users from './components/Users'
-import Profile from './components/Profile'
+import UserStore from './mobx/UserStore'
 import Header from './components/Header'
-import Footer from './components/Footer'
+import Routes from './Routes'
+import { primary } from './theme'
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+class Router extends React.Component {
+  state = {
+    view: 'convos'
+  }
+  componentDidMount() {
+    UserStore.init()
+    Hub.listen('auth', this);
+  }
+  onHubCapsule = (data) => {
+    const { channel } = data;
+    if (channel === 'auth') {
+      this.props.onStateChange()
+    }
+  }
+  toggleDisplay = (view) => {
+    this.setState(() => ({
+      view
+    }))
+  }
+  render() {
+    return (
+      <Routes />
+    )
+  }
+}
+
+const routeConfig = {
+  theme: {
+    button: {
+      backgroundColor: primary,
+      color: 'black'
+    },
+    a: {
+      color: 'black'
+    }
+  }
+}
+
+const RouterWithAuth = withAuthenticator(Router, routeConfig)
 
 const AppRouter = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <div>
         <Header />
-        <Switch>
-          <Route path="/" exact component={Conversations} />
-          <Route path="/users/" component={Users} />
-          <Route path="/profile/" component={Profile} />
-          <Route path="/conversation/:conversationId/:conversationName" component={Conversation} />
-          <Route component={() => <p>404 no route found</p>} />
-        </Switch>
-        <Footer />
+        <RouterWithAuth />
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 

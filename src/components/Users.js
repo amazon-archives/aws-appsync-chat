@@ -2,10 +2,10 @@ import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { css } from 'glamor'
 import { FaUser, FaPlus } from 'react-icons/fa'
-
 import { observer } from 'mobx-react'
+
 import { primary } from '../theme'
-import { listUsers } from '../graphql'
+import { listUsers, onCreateUser as OnCreateUser } from '../graphql'
 import Overlay from './Overlay'
 import UserStore from '../mobx/UserStore'
 
@@ -14,9 +14,11 @@ class Users extends React.Component {
   toggleOverlay = (visible, userForConvo) => {
     this.setState({ showOverlay: visible, userForConvo })
   }
+  componentDidMount() {
+    this.props.subscribeToNewMessages()
+  }
   render() {
     const { username, userId } = UserStore
-    console.log('props from Users:', this.props)
     const users = this.props.users.filter(u => u.username !== username)
     return (
       <div {...css(styles.container)}>
@@ -87,9 +89,30 @@ const UsersWithData = compose(
       fetchPolicy: 'cache-and-network'
     },
     props: props => {
-      console.log('props:', props)
       return {
-        users: props.data.listUsers ? props.data.listUsers.items : []
+        users: props.data.listUsers ? props.data.listUsers.items : [],
+        subscribeToNewMessages: () => {
+          props.data.subscribeToMore({
+            document: OnCreateUser,
+            updateQuery: (prev, { subscriptionData: { data : { onCreateUser } } }) => {
+    
+              let userArray = prev.listUsers.items.filter(u => u.id !== onCreateUser.id)
+              userArray = [
+                ...userArray,
+                onCreateUser,
+              ]
+              console.log('userArray:' , userArray)
+
+              return {
+                ...prev,
+                listUsers: {
+                  ...prev.listUsers,
+                  items: userArray
+                }
+              }
+            }
+          })
+        },
       }
     }
   })

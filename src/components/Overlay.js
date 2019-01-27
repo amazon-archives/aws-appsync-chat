@@ -1,6 +1,5 @@
 import React from 'react'
 import { css } from 'glamor'
-import uuid from 'uuid/v4'
 import { API, graphqlOperation } from 'aws-amplify'
 
 import { primary } from '../theme'
@@ -11,7 +10,7 @@ class Overlay extends React.Component {
   createConversation = async () => {
     this.setState({ creatingConversation: true })
     try {
-      const { username, userId, user: { username: otherUserName, id: otherUserId }} = this.props
+      const { username, user: { username: otherUserName, id: otherUserId }} = this.props
       const members = [username, otherUserName].sort()
       const conversationName = members.join(' and ')
       const convo = { name: conversationName, members }

@@ -37,7 +37,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ededed'
+    backgroundColor: '#ededed',
+    cursor: 'pointer'
   },
   buttonText: {
     fontWeight: 500

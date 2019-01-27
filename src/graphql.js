@@ -7,7 +7,7 @@ const createUser = `
     createUser(input: {
       username: $username
     }) {
-      id
+      id username createdAt
     }
   }
 `
@@ -27,17 +27,6 @@ const createMessage = gql`mutation CreateMessage(
 }
 `;
 
-// const createMessage = gql`
-//   mutation($content: String, $conversationId: ID!, $createdAt: String!, $id: ID!) {
-//     createMessage(content: $content, conversationId: $conversationId, createdAt: $createdAt, id: $id) {
-//       id
-//       createdAt
-//       conversationId
-//       content
-//       sender
-//     }
-//   }
-// `
 
 const createConvo = `mutation CreateConvo($name: String!, $members: [String!]!) {
   createConvo(input: {
@@ -49,14 +38,6 @@ const createConvo = `mutation CreateConvo($name: String!, $members: [String!]!) 
   }
 }
 `;
-
-// const createConversation =  `
-//   mutation($createdAt: String, $id: ID!, $name: String!) {
-//     createConversation(createdAt: $createdAt, id: $id, name: $name) {
-//       createdAt id name
-//     }
-//   }
-// `
 
 const createConvoLink = `mutation CreateConvoLink(
     $convoLinkConversationId: ID!, $convoLinkUserId: ID
@@ -74,24 +55,6 @@ const createConvoLink = `mutation CreateConvoLink(
   }
 }
 `;
-
-// const createUserConversations =  `
-//   mutation($conversationId: ID!, $userId: ID!) {
-//     createUserConversations(conversationId: $conversationId, userId: $userId) {
-//       conversationId userId
-//     }
-//   }
-// `
-
-// queries
-// const getUserInfo = `
-//   query {
-//     me {
-//       username
-//       id
-//     }
-//   }
-// `
 
 const getUser = graphql`
   query getUser($id: ID!) {
@@ -141,54 +104,17 @@ const getConvo = gql`
   }
 `
 
-// const getConversation = gql`
-//   query($conversationId: ID!) {
-//     allMessageConnection(conversationId: $conversationId) {
-//       messages {
-//         id
-//         createdAt
-//         conversationId
-//         content
-//         sender
-//       }
-//     }
-//   } 
-// `
-
 const listUsers = graphql`
   query listUsers {
     listUsers {
       items {
-        username
         id
+        username
         createdAt
       }
     }
   }
 `
-
-// const allUser = graphql`
-//   query {
-//     allUser {
-//       username
-//       id
-//       cognitoId
-//     }
-//   }
-// `
-
-// subscriptions
-// const subscribeToNewMessage = gql`
-//   subscription($conversationId: ID!) {
-//     subscribeToNewMessage(conversationId: $conversationId) {
-//       id
-//       createdAt
-//       conversationId
-//       content
-//       sender
-//     }
-//   }
-// `
 
 const onCreateMessage = gql`
   subscription onCreateMessage($messageConversationId: ID!) {
@@ -202,6 +128,15 @@ const onCreateMessage = gql`
   }
 `
 
+const onCreateUser = gql`subscription OnCreateUser {
+  onCreateUser {
+    id
+    username
+    createdAt
+  }
+}
+`;
+
 export {
   createUser,
   createMessage,
@@ -211,5 +146,6 @@ export {
   getUser,
   getUserAndConversations,
   listUsers,
-  onCreateMessage
+  onCreateMessage,
+  onCreateUser
 }

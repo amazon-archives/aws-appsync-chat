@@ -8,8 +8,6 @@ class User {
   userId = ''
   email = ''
   async init() {
-    // set username
-    console.log('init!')
     try {
       const user = await Auth.currentAuthenticatedUser()
       console.log('user:', user)
@@ -29,10 +27,8 @@ class User {
   }
 
   async checkIfUserExists(id) {
-    console.log('id:', id)
     try {
       const user = await API.graphql(graphqlOperation(GetUser, {id: id}))
-      console.log('user:', user)
       const { getUser } = user.data
       if (!getUser) {
         this.createUser()
@@ -48,7 +44,7 @@ class User {
     try {
       await API.graphql(graphqlOperation(createUser, { username: this.username }))
     } catch (err) {
-      console.log('error signing up user', err)
+      console.log('User exists!')
     }
   }
 }

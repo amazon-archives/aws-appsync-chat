@@ -81,7 +81,7 @@
 		"authauth": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/chatt-20190119080035-deployment/amplify-cfn-templates/auth/auth-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/chatt-20190127125226-deployment/amplify-cfn-templates/auth/auth-cloudformation-template.yml",
 				"Parameters": {
 					"identityPoolName": "allamplifychatt",
 					"allowUnauthenticatedIdentities": false,
@@ -139,14 +139,14 @@
 							"Arn"
 						]
 					},
-					"env": "local"
+					"env": "chatttest"
 				}
 			}
 		},
 		"apiallamplifychatt": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/chatt-20190119080035-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"TemplateURL": "https://s3.amazonaws.com/chatt-20190127125226-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"Parameters": {
 					"AppSyncApiName": "allamplifychatt",
 					"AuthCognitoUserPoolId": {
@@ -155,11 +155,11 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://chatt-20190119080035-deployment/amplify-appsync-files/schema.graphql.1548020301391",
-					"ResolverBucket": "chatt-20190119080035-deployment",
+					"schemaGraphql": "s3://chatt-20190127125226-deployment/amplify-appsync-files/schema.graphql.1548622472981",
+					"ResolverBucket": "chatt-20190127125226-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1548020301391",
-					"env": "local"
+					"DeploymentTimestamp": "1548622472981",
+					"env": "chatttest"
 				}
 			}
 		}

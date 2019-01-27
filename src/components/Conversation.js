@@ -129,7 +129,6 @@ const styles = {
   input: {
     height: 45,
     outline: 'none',
-    border: 'none',
     border: '2px solid #ededed',
     margin: 5,
     borderRadius: 30,
@@ -169,16 +168,13 @@ const ConversationWithData = compose(
             document: OnCreateMessage,
             variables: { messageConversationId: conversationId },
             updateQuery: (prev, { subscriptionData: { data : { onCreateMessage } } }) => {
-              console.log('onCreateMessage:', onCreateMessage)
-              console.log('prev.getConvo.messages.items: ', prev.getConvo.messages.items)
     
               let messageArray = prev.getConvo.messages.items.filter(message => message.id !== onCreateMessage.id)
               messageArray = [
                 ...messageArray,
                 onCreateMessage,
               ]
-              // console.log('prev: ', prev)
-              // return
+
               return {
                 ...prev,
                 getConvo: {

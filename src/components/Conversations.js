@@ -20,7 +20,6 @@ const ConversationsObserver = observer(
         const name = convo.find(i => i !== username)
         return { ...c, name }
       })
-      console.log('conversations:', conversations)
       return (
         <div {...css(styles.container)}>
           <p {...css(styles.title)}>Conversations</p>
