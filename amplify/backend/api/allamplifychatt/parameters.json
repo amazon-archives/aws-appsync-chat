@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "allamplifychatt",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authauth",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "schemaGraphql": "s3://chatt-20190119080035-deployment/amplify-appsync-files/schema.graphql.1548020301391",
+    "ResolverBucket": "chatt-20190119080035-deployment",
+    "ResolverRootKey": "amplify-appsync-files",
+    "DeploymentTimestamp": "1548020301391"
+}

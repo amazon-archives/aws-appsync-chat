@@ -1,0 +1,61 @@
+type User 
+  @model 
+  @auth(rules: [{ allow: owner, ownerField: "id", queries: null }]) {
+  id: ID!
+  username: String!
+  conversations: [ConvoLink] @connection(name: "UserLinks")
+  messages: [Message] @connection(name: "UserMessages")
+	createdAt: String
+	updatedAt: String
+}
+
+type Conversation
+  @model(
+    mutations: { create: "createConvo" }
+    queries: { get: "getConvo" }
+    subscriptions: null
+  )
+  @auth(rules: [{ allow: owner, ownerField: "members" }]) {
+  id: ID!
+  messages: [Message] @connection(name: "ConvoMsgs", sortField: "createdAt")
+  associated: [ConvoLink] @connection(name: "AssociatedLinks")
+  name: String!
+  members: [String!]!
+	createdAt: String
+	updatedAt: String
+}
+
+type Message 
+  @model(subscriptions: null, queries: null) 
+  @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  id: ID!
+  author: User @connection(name: "UserMessages", keyField: "authorId")
+  authorId: String
+  content: String!
+  conversation: Conversation! @connection(name: "ConvoMsgs")
+  messageConversationId: ID!
+	createdAt: String
+	updatedAt: String
+}
+
+type ConvoLink 
+  @model(
+    mutations: { create: "createConvoLink", update: "updateConvoLink" }
+    queries: null
+    subscriptions: null
+  ) {
+  id: ID!
+  user: User! @connection(name: "UserLinks")
+  convoLinkUserId: ID
+  conversation: Conversation! @connection(name: "AssociatedLinks")
+  convoLinkConversationId: ID!
+	createdAt: String
+	updatedAt: String
+}
+
+type Subscription {
+  onCreateConvoLink(convoLinkUserId: ID!): ConvoLink
+    @aws_subscribe(mutations: ["createConvoLink"])
+  onCreateMessage(messageConversationId: ID!): Message
+    @aws_subscribe(mutations: ["createMessage"])
+}

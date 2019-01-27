@@ -1,0 +1,37 @@
+#set( $limit = $util.defaultIfNull($context.args.limit, 10) )
+{
+  "version": "2017-02-28",
+  "operation": "Query",
+  "query": {
+      "expression": "#connectionAttribute = :connectionAttribute",
+      "expressionNames": {
+          "#connectionAttribute": "convoLinkUserId"
+    },
+      "expressionValues": {
+          ":connectionAttribute": {
+              "S": "$context.source.id"
+      }
+    }
+  },
+  "scanIndexForward":   #if( $context.args.sortDirection )
+    #if( $context.args.sortDirection == "ASC" )
+true
+    #else
+false
+    #end
+  #else
+true
+  #end,
+  "filter":   #if( $context.args.filter )
+$util.transform.toDynamoDBFilterExpression($ctx.args.filter)
+  #else
+null
+  #end,
+  "limit": $limit,
+  "nextToken":   #if( $context.args.nextToken )
+"$context.args.nextToken"
+  #else
+null
+  #end,
+  "index": "gsi-UserLinks"
+}

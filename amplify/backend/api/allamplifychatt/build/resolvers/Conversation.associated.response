@@ -1,0 +1,4 @@
+#if( !$result )
+  #set( $result = $ctx.result )
+#end
+$util.toJson($result)
