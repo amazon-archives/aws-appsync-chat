@@ -36,7 +36,7 @@ npm install -g @aws-amplify/cli@multienv
 2. Clone Chatt
 
 ```sh
-git clone https://github.com/dabit3/chatt.git
+git clone https://github.com/aws-samples/aws-appsync-chat.git
 ```
 
 3. Install dependencies
