@@ -50,18 +50,7 @@ npm install
 ```sh
 amplify init
 ```
-
-> Walkthrough the following steps:
-
-- Enter a name for the project __YOURPROJECTNAME__
 - Enter a name for the environment __master__
-- Choose your default editor: __Visual Studio Code__ (or your editor of choice)
-- Choose the type of app that you're building __javascript__
-- What javascript framework are you using __react__
-- Source Directory Path: __src__
-- Distribution Directory Path: __public__
-- Build Command: __npm run-script build__
-- Start Command: __npm run-script develop__
 
 5. Push the new resources to the cloud
 
