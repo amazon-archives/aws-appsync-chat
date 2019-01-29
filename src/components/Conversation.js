@@ -46,7 +46,6 @@ class Conversation extends React.Component {
     const { username } = UserStore
     let { messages } = this.props
     messages = messages.sort((a, b) => a.createdAt - b.createdAt)
-    console.log('messages: ', messages)
 
     return (
       <div>

@@ -10,7 +10,7 @@ class Overlay extends React.Component {
   createConversation = async () => {
     this.setState({ creatingConversation: true })
     try {
-      const { username, user: { username: otherUserName, id: otherUserId }} = this.props
+      const { username, user: { username: otherUserName }} = this.props
       const members = [username, otherUserName].sort()
       const conversationName = members.join(' and ')
       const convo = { name: conversationName, members }

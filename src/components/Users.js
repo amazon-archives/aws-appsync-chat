@@ -18,7 +18,7 @@ class Users extends React.Component {
     this.props.subscribeToNewMessages()
   }
   render() {
-    const { username, userId } = UserStore
+    const { username } = UserStore
     const users = this.props.users.filter(u => u.username !== username)
     return (
       <div {...css(styles.container)}>
@@ -27,7 +27,6 @@ class Users extends React.Component {
             <Overlay
               user={this.state.userForConvo}
               toggleOverlay={this.toggleOverlay}
-              userId={userId}
               username={username}
               history={this.props.history}
             />

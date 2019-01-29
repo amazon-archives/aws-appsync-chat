@@ -5,30 +5,25 @@ import { observable, decorate } from 'mobx'
 
 class User {
   username = ''
-  userId = ''
   email = ''
   async init() {
     try {
       const user = await Auth.currentAuthenticatedUser()
-      console.log('user:', user)
       this.username = user.username
-      this.userId = user.signInUserSession.idToken.payload.sub
       this.email = user.signInUserSession.idToken.payload.email
     } catch (err) {
       console.log('error getting user data... ', err)
     }
+    console.log('username:', this.username)
     // check if user exists in db, if not then create user
-    try {
-      await Auth.currentAuthenticatedUser()
-      this.checkIfUserExists(this.userId)
-    } catch (err) {
-      console.log('error:' , err)
+    if (this.username !== '') {
+      this.checkIfUserExists(this.username)
     }
   }
 
   async checkIfUserExists(id) {
     try {
-      const user = await API.graphql(graphqlOperation(GetUser, {id: id}))
+      const user = await API.graphql(graphqlOperation(GetUser, {id}))
       const { getUser } = user.data
       if (!getUser) {
         this.createUser()
@@ -44,13 +39,12 @@ class User {
     try {
       await API.graphql(graphqlOperation(createUser, { username: this.username }))
     } catch (err) {
-      console.log('User exists!')
+      console.log('Error creating user! :', err)
     }
   }
 }
 
 decorate(User, {
-  userId: observable,
   username: observable,
   email: observable
 });
