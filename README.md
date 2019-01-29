@@ -35,6 +35,8 @@ This project contains an Amplify project (`/amplify`) already configured & ready
 npm install -g @aws-amplify/cli@multienv
 ```
 
+> You must also have the CLI configured with a user from your AWS account (`amplify configure`). For a walkthrough of how to do this, check out [this](https://www.youtube.com/watch?v=fWbM5DLh25U) video.
+
 2. Clone Chatt
 
 ```sh
