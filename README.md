@@ -27,7 +27,7 @@ Real-Time Offline Ready Chat App written with GraphQL, AWS AppSync, & AWS Amplif
 
 ## Building the App (automated)
 
-This project contains an Amplify project (`/amplify`) already configured & ready to be deployed in your account. Deploying this project will create the following resources in your account: an authentication configuration using Amazon Cognito, an AWS AppSync GraphQL API & a DynamoDB table.
+This project contains an Amplify project (`/amplify`) already configured & ready to be deployed. Deploying this project will create the following resources in your account: an authentication configuration using Amazon Cognito, an AWS AppSync GraphQL API, & a DynamoDB table.
 
 1. Make sure you are on the newest version of the AWS Amplify CLI
 
