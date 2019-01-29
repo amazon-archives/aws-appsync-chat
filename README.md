@@ -25,7 +25,9 @@ Real-Time Offline Ready Chat App written with GraphQL, AWS AppSync, & AWS Amplif
 
 ![](src/assets/hero2.jpg)
 
-## Building the App
+## Building the App (automated)
+
+This project contains an Amplify project (`/amplify`) already configured & ready to be deployed in your account. Deploying this project will create the following resources in your account: an authentication configuration using Amazon Cognito, an AWS AppSync GraphQL API & a DynamoDB table.
 
 1. Make sure you are on the newest version of the AWS Amplify CLI
 
@@ -63,6 +65,149 @@ amplify push
 ```sh
 npm start
 ```
+
+7. Deleting the project resources
+
+If you'd like to tear down the project & delete all of the resources created by this project, run the `delete` command.
+
+```sh
+amplify delete
+```
+
+
+## Building the App (manually)
+
+You can also manually set up your resources if you would like. If you would like to manually create & configure the resources for this project, follow these steps:
+
+1. Install & configure the Amplify CLI
+
+```sh
+npm install -g @aws-amplify/cli@multienv
+
+amplify configure
+```
+
+2. Clone Chatt
+
+```sh
+git clone https://github.com/aws-samples/aws-appsync-chat.git
+```
+
+3. Install dependencies
+
+```sh
+npm install
+```
+
+4. Delete the amplify folder
+
+5. Initialize a new Amplify project
+
+```sh
+amplify init
+```
+
+6. Add authentication
+
+```sh
+amplify add auth
+```
+
+> Here, either choose the default security choice or configure your own.
+
+7. Add the api
+
+```sh
+amplify add api
+```
+
+> Choose Cognito User Pools as the authentication type.
+> When prompted for the GraphQL schema, use the following schema:
+
+```graphql
+type User 
+  @model 
+  @auth(rules: [{ allow: owner, ownerField: "id", queries: null }]) {
+  id: ID!
+  username: String!
+  conversations: [ConvoLink] @connection(name: "UserLinks")
+  messages: [Message] @connection(name: "UserMessages")
+	createdAt: String
+	updatedAt: String
+}
+
+type Conversation
+  @model(
+    mutations: { create: "createConvo" }
+    queries: { get: "getConvo" }
+    subscriptions: null
+  )
+  @auth(rules: [{ allow: owner, ownerField: "members" }]) {
+  id: ID!
+  messages: [Message] @connection(name: "ConvoMsgs", sortField: "createdAt")
+  associated: [ConvoLink] @connection(name: "AssociatedLinks")
+  name: String!
+  members: [String!]!
+	createdAt: String
+	updatedAt: String
+}
+
+type Message 
+  @model(subscriptions: null, queries: null) 
+  @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  id: ID!
+  author: User @connection(name: "UserMessages", keyField: "authorId")
+  authorId: String
+  content: String!
+  conversation: Conversation! @connection(name: "ConvoMsgs")
+  messageConversationId: ID!
+	createdAt: String
+	updatedAt: String
+}
+
+type ConvoLink 
+  @model(
+    mutations: { create: "createConvoLink", update: "updateConvoLink" }
+    queries: null
+    subscriptions: null
+  ) {
+  id: ID!
+  user: User! @connection(name: "UserLinks")
+  convoLinkUserId: ID
+  conversation: Conversation! @connection(name: "AssociatedLinks")
+  convoLinkConversationId: ID!
+	createdAt: String
+	updatedAt: String
+}
+
+type Subscription {
+  onCreateConvoLink(convoLinkUserId: ID!): ConvoLink
+    @aws_subscribe(mutations: ["createConvoLink"])
+  onCreateMessage(messageConversationId: ID!): Message
+    @aws_subscribe(mutations: ["createMessage"])
+}
+```
+
+8. Run the `push` command to create the resources in your account:
+
+```sh
+amplify push
+```
+
+9. Run the project
+
+```sh
+npm start
+```
+
+10. Deleting the project resources
+
+If you'd like to tear down the project & delete all of the resources created by this project, run the `delete` command.
+
+```sh
+amplify delete
+```
+
 ## Hosting with the AWS Amplify Console
 
 The [AWS Amplify Console](https://console.amplify.aws) provides continuous deployment and hosting for modern web apps (single page apps and static site generators) with serverless backends. Continuous deployment allows developers to deploy updates to either the frontend or backend (Lambda functions, GraphQL resolvers) on every code commit to the Git repository.
