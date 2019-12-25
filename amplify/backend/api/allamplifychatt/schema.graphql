@@ -27,7 +27,7 @@ type Conversation
 
 type Message 
   @model(subscriptions: null, queries: null) 
-  @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  @auth(rules: [{ allow: owner, ownerField: "authorId", operations: [create, update, delete]}]) {
   id: ID!
   author: User @connection(name: "UserMessages", keyField: "authorId")
   authorId: String
