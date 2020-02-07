@@ -1,5 +1,7 @@
-type User 
-  @model 
+type User
+  @model(
+    subscriptions: null
+  )
   @auth(rules: [{ allow: owner, ownerField: "id", queries: null }]) {
   id: ID!
   username: String!
@@ -58,4 +60,10 @@ type Subscription {
     @aws_subscribe(mutations: ["createConvoLink"])
   onCreateMessage(messageConversationId: ID!): Message
     @aws_subscribe(mutations: ["createMessage"])
+  onCreateUser: User
+    @aws_subscribe(mutations: ["createUser"])
+  onDeleteUser: User
+    @aws_subscribe(mutations: ["deleteUser"])
+  onUpdateUser: User
+    @aws_subscribe(mutations: ["updateUser"])
 }
