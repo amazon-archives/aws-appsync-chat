@@ -84,7 +84,7 @@ You can also manually set up your resources if you would like. If you would like
 1. Install & configure the Amplify CLI
 
 ```sh
-npm install -g @aws-amplify
+npm install -g @aws-amplify/cli
 
 amplify configure
 ```
